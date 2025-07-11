@@ -21,11 +21,11 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <div className={`${sizeClasses[size]} animate-spin`}>
-        <div className="border-4 border-gray-300 border-t-blue-600 rounded-full w-full h-full"></div>
+      <div className={`${sizeClasses[size]} animate-spin mb-4`}>
+        <div className="border-4 border-gray-200 dark:border-gray-700 border-t-blue-600 dark:border-t-blue-400 rounded-full w-full h-full"></div>
       </div>
       {message && (
-        <p className="mt-2 text-gray-600 text-sm">{message}</p>
+        <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{message}</p>
       )}
     </div>
   );

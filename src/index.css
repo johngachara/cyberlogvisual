@@ -6,9 +6,31 @@
  * Custom styles for the cybersecurity dashboard
  */
 
+/* CSS Variables for theme colors */
+:root {
+  --tooltip-bg: #ffffff;
+  --tooltip-border: #e5e7eb;
+  --tooltip-text: #374151;
+  --chart-grid: #e5e7eb;
+  --chart-text: #6b7280;
+}
+
+.dark {
+  --tooltip-bg: #374151;
+  --tooltip-border: #4b5563;
+  --tooltip-text: #f3f4f6;
+  --chart-grid: #4b5563;
+  --chart-text: #d1d5db;
+}
+
 /* Smooth scrolling for the entire page */
 html {
   scroll-behavior: smooth;
+}
+
+/* Dark mode support */
+html.dark {
+  color-scheme: dark;
 }
 
 /* Custom scrollbar styles */
@@ -21,13 +43,25 @@ html {
   background: #f1f5f9;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 
 /* Focus styles for better accessibility */
@@ -36,6 +70,13 @@ select:focus,
 button:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Enhanced focus styles for dark mode */
+.dark input:focus,
+.dark select:focus,
+.dark button:focus {
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
 }
 
 /* Animation for loading states */
@@ -52,9 +93,24 @@ button:focus {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Enhanced spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 /* Custom transitions */
 .transition-all {
   transition: all 0.2s ease-in-out;
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 /* Table hover effects */
@@ -64,10 +120,51 @@ button:focus {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+.dark .table-row-hover:hover {
+  background-color: #374151;
+}
+
 /* Card hover effects */
 .card-hover:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced button hover effects */
+.btn-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dark .btn-hover:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal backdrop blur effect */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Enhanced shadows for dark mode */
+.shadow-enhanced {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .shadow-enhanced {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive utilities */
@@ -78,6 +175,27 @@ button:focus {
   
   .mobile-text {
     font-size: 0.875rem;
+  }
+  
+  /* Improved mobile touch targets */
+  button, 
+  input, 
+  select {
+    min-height: 44px;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-optimized {
+    padding: 1rem;
+  }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1024px) {
+  .desktop-enhanced {
+    padding: 1.5rem;
   }
 }
 
@@ -90,19 +208,32 @@ button:focus {
   .print-break {
     page-break-after: always;
   }
-}
-/* Add spinner animation for loading states */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  
+  /* Ensure good contrast in print */
+  * {
+    background: white !important;
+    color: black !important;
+  }
 }
 
-.spinner {
-  border: 3px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top: 3px solid #3498db;
-  width: 24px;
-  height: 24px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .border {
+    border-width: 2px;
+  }
+  
+  button {
+    border: 2px solid currentColor;
+  }
 }

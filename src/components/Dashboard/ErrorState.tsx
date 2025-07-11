@@ -12,14 +12,16 @@ interface ErrorStateProps {
 
 const ErrorState: React.FC<ErrorStateProps> = ({ error, onRetry }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-red-50 rounded-lg border border-red-200">
-      <AlertTriangle className="w-12 h-12 text-red-600 mb-4" />
-      <h3 className="text-lg font-semibold text-red-800 mb-2">Error Loading Data</h3>
-      <p className="text-red-600 text-center mb-4">{error}</p>
+    <div className="flex flex-col items-center justify-center p-8 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800 transition-colors duration-200">
+      <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
+        <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
+      </div>
+      <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">Error Loading Data</h3>
+      <p className="text-red-600 dark:text-red-400 text-center mb-4 max-w-md">{error}</p>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          className="flex items-center gap-2 px-6 py-3 bg-red-600 dark:bg-red-700 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
         >
           <RefreshCw className="w-4 h-4" />
           Retry
