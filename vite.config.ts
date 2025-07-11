@@ -15,7 +15,7 @@ export default defineConfig({
         description: 'SECURITY',
         theme_color: '#ffffff',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/dashboard',
         background_color: '#ffffff',
         icons: [
           {
