@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Shield, Activity, RefreshCw } from 'lucide-react';
+import {Shield, Activity, RefreshCw, LogOut} from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import ThemeToggle from '../Theme/ThemeToggle';
 
@@ -13,7 +13,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onRefresh, loading = false }) => {
-  const { signOut, authState } = useAuth();
+  const { signOut } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
