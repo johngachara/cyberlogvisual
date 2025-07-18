@@ -28,7 +28,7 @@ export default defineConfig({
                         purpose: 'any maskable'
                     },
                     {
-                        src: 'cyberguard.png',
+                        src: '/pages/cyberguard.png',
                         sizes: '512x512',
                         type: 'image/png',
                         purpose: 'any maskable'
