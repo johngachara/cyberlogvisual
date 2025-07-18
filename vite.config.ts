@@ -22,7 +22,7 @@ export default defineConfig({
                 background_color: '#ffffff',
                 icons: [
                     {
-                        src: 'cyberguard.png',
+                        src: '/pages/cyberguard.png',
                         sizes: '192x192',
                         type: 'image/png',
                         purpose: 'any maskable'
