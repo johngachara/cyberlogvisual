@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -28,13 +29,13 @@ const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+      className="relative p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out transform hover:scale-105"
       aria-label="Toggle dark mode"
     >
       {isDarkMode ? (
-        <hero-icon-outline-sun class="h-6 w-6" />
+        <Sun className="h-5 w-5" />
       ) : (
-        <hero-icon-outline-moon class="h-6 w-6" />
+        <Moon className="h-5 w-5" />
       )}
     </button>
   );

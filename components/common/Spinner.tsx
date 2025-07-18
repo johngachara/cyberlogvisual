@@ -15,7 +15,7 @@ const sizeClasses = {
 const Spinner: React.FC<SpinnerProps> = ({ size = 'md' }) => {
   return (
     <div
-      className={`${sizeClasses[size]} animate-spin rounded-full border-4 border-solid border-primary-500 border-t-transparent`}
+      className={`${sizeClasses[size]} animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent`}
       role="status"
     >
         <span className="sr-only">Loading...</span>

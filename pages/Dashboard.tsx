@@ -5,7 +5,9 @@ import Navbar from '../components/Navbar';
 import FilterBar from '../components/FilterBar';
 import LogTable from '../components/LogTable';
 import LogDetailModal from '../components/LogDetailModal';
+import Analytics from '../components/Analytics';
 import Spinner from '../components/common/Spinner';
+import { BarChart3, Table, Shield } from 'lucide-react';
 
 const LOGS_PER_PAGE = 15;
 
@@ -14,6 +16,9 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
   const [dataReady, setDataReady] = useState(false);
+
+  // Tab state for Analytics vs Logs view
+  const [activeTab, setActiveTab] = useState<'logs' | 'analytics'>('logs');
 
   // Filtering and Search State
   const [searchQuery, setSearchQuery] = useState('');
@@ -105,17 +110,22 @@ const Dashboard: React.FC = () => {
 
   if (loading || !dataReady) {
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
           <Navbar />
-          <main className="p-4 sm:p-6 lg:p-8">
+        <main className="p-6 sm:p-8 lg:p-10">
             <div className="max-w-7xl mx-auto">
-              <header className="mb-6">
-                <h1 className="text-3xl font-bold">Log Dashboard</h1>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <header className="mb-8">
+              <div className="flex items-center mb-4">
+                <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3" />
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                  Security Dashboard
+                </h1>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
                   Monitor and analyze security events in real-time.
                 </p>
               </header>
-              <div className="flex justify-center items-center h-96">
+            <div className="flex justify-center items-center h-96 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
                 <Spinner size="xl" />
               </div>
             </div>
@@ -125,37 +135,76 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
         <Navbar />
-        <main className="p-4 sm:p-6 lg:p-8">
+      <main className="p-6 sm:p-8 lg:p-10">
           <div className="max-w-7xl mx-auto">
-            <header className="mb-6">
-              <h1 className="text-3xl font-bold">Log Dashboard</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <header className="mb-8">
+            <div className="flex items-center mb-4">
+              <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3" />
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                Security Dashboard
+              </h1>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
                 Monitor and analyze security events in real-time.
               </p>
             </header>
 
-            <FilterBar
+          {/* Tab Navigation */}
+          <div className="mb-8">
+            <nav className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl w-fit">
+              <button
+                onClick={() => setActiveTab('logs')}
+                className={`flex items-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                  activeTab === 'logs'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-lg'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+              >
+                <Table className="h-4 w-4 mr-2" />
+                Security Logs
+              </button>
+              <button
+                onClick={() => setActiveTab('analytics')}
+                className={`flex items-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                  activeTab === 'analytics'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-lg'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+              >
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Analytics
+              </button>
+            </nav>
+          </div>
+          {activeTab === 'logs' && (
+            <>
+              <FilterBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 filters={filters}
                 setFilters={setFilters}
                 logData={logs}
-            />
+              />
 
-            <LogTable
+              <LogTable
                 logs={paginatedLogs}
                 onRowClick={handleRowClick}
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
-            />
+              />
+            </>
+          )}
           </div>
         </main>
         {selectedLog && <LogDetailModal log={selectedLog} onClose={closeModal} />}
-      </div>
+    </div>
   );
 };
 
+          {activeTab === 'analytics' && (
+            <Analytics logs={logs} />
+          )}
 export default Dashboard;
