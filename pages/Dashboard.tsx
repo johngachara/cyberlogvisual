@@ -150,7 +150,9 @@ const Dashboard: React.FC = () => {
                 Monitor and analyze security events in real-time.
               </p>
             </header>
-
+              {activeTab === 'analytics' && (
+                  <Analytics logs={logs} />
+              )}
           {/* Tab Navigation */}
           <div className="mb-8">
             <nav className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl w-fit">
@@ -204,7 +206,5 @@ const Dashboard: React.FC = () => {
   );
 };
 
-          {activeTab === 'analytics' && (
-            <Analytics logs={logs} />
-          )}
+
 export default Dashboard;

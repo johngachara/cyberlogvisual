@@ -63,12 +63,12 @@ const Analytics: React.FC<AnalyticsProps> = ({ logs }) => {
 
   const stats = useMemo(() => {
     const total = logs.length;
-    const blocked = logs.filter(log => log.decision === 'blocked').length;
-    const allowed = logs.filter(log => log.decision === 'allowed').length;
+    const blocked = logs.filter(log => log.decision === 'MALICIOUS').length;
+    const allowed = logs.filter(log => log.decision === 'BENIGN').length;
     const monitored = logs.filter(log => log.decision === 'monitored').length;
-    const avgConfidence = logs.reduce((sum, log) => sum + log.confidence, 0) / total;
 
-    return { total, blocked, allowed, monitored, avgConfidence };
+
+    return { total, blocked, allowed, monitored };
   }, [logs]);
 
   if (logs.length === 0) {
@@ -116,16 +116,6 @@ const Analytics: React.FC<AnalyticsProps> = ({ logs }) => {
             <div className="h-8 w-8 bg-red-600 dark:bg-red-400 rounded-full flex items-center justify-center">
               <span className="text-white dark:text-red-900 text-sm font-bold">✕</span>
             </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-amber-600 dark:text-amber-400">Avg Confidence</p>
-              <p className="text-3xl font-bold text-amber-900 dark:text-amber-100">{((stats.avgConfidence / 10) * 100).toFixed(0)}%</p>
-            </div>
-            <TrendingUp className="h-8 w-8 text-amber-600 dark:text-amber-400" />
           </div>
         </div>
       </div>
