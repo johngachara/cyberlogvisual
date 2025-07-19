@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import ThemeToggle from '../components/common/ThemeToggle';
-import { Shield, Mail, Lock } from 'lucide-react';
+import { Shield, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('admin@example.com');
@@ -44,41 +43,56 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="absolute top-6 right-6">
-            <ThemeToggle />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/90 via-white to-purple-50/90 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative">
+        {/* Theme toggle with improved positioning and styling */}
+        <div className="absolute top-0 right-0 md:top-6 md:right-6 z-10">
+          <ThemeToggle />
         </div>
-        <div className="flex justify-center mb-6">
-          <div className="p-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-lg">
-            <Shield className="h-12 w-12 text-white" />
+        
+        {/* Logo with enhanced animation and styling */}
+        <div className="flex justify-center mb-8">
+          <div className="p-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 transform hover:scale-105 transition-all duration-300">
+            <Shield className="h-12 w-12 text-white drop-shadow-md" />
           </div>
         </div>
-        <h2 className="text-center text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2">
+        
+        {/* Title with improved gradient and responsive typography */}
+        <h2 className="text-center text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2 tracking-tight">
           CyberGuard
         </h2>
-        <p className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+        
+        <p className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-8">
           Security Dashboard
         </p>
-        <p className="text-center text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-gray-800 p-4 rounded-xl border border-blue-200 dark:border-gray-700">
-          <span className="font-semibold">Demo Credentials:</span><br />
-          Email: <span className="font-mono text-blue-600 dark:text-blue-400">admin@example.com</span><br />
-          Password: <span className="font-mono text-blue-600 dark:text-blue-400">password</span>
-        </p>
+        
+        {/* Demo credentials card with improved styling */}
+        <div className="mb-8 mx-auto max-w-sm">
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400 bg-blue-50/80 dark:bg-gray-800/80 backdrop-blur-sm p-4 rounded-xl border border-blue-200 dark:border-blue-800/50 shadow-sm">
+            <span className="font-semibold block mb-2 text-gray-800 dark:text-gray-200">Demo Credentials</span>
+            <div className="grid grid-cols-2 gap-2 text-xs md:text-sm">
+              <span className="text-gray-500 dark:text-gray-400 text-right">Email:</span>
+              <span className="font-mono text-blue-600 dark:text-blue-400 text-left">admin@example.com</span>
+              <span className="text-gray-500 dark:text-gray-400 text-right">Password:</span>
+              <span className="font-mono text-blue-600 dark:text-blue-400 text-left">password</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg py-10 px-6 shadow-2xl sm:rounded-2xl sm:px-12 border border-gray-200 dark:border-gray-700">
+      {/* Form container with enhanced glassmorphism effect */}
+      <div className="mt-2 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
+        <div className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-xl py-10 px-6 shadow-2xl sm:rounded-2xl sm:px-12 border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
           <form className="space-y-6" onSubmit={handleLogin}>
             <div>
               <label
                 htmlFor="email"
                 className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
               >
-                <Mail className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <Mail className="h-4 w-4 mr-2 text-blue-500 dark:text-blue-400" />
                 Email address
               </label>
-              <div className="mt-1">
+              <div className="mt-1 relative">
                 <input
                   id="email"
                   name="email"
@@ -87,7 +101,7 @@ const Login: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-50 dark:bg-gray-700 dark:text-white transition-all duration-200"
+                  className="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-50/80 dark:bg-gray-700/80 dark:text-white transition-all duration-200"
                 />
               </div>
             </div>
@@ -97,10 +111,10 @@ const Login: React.FC = () => {
                 htmlFor="password"
                 className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
               >
-                <Lock className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <Lock className="h-4 w-4 mr-2 text-blue-500 dark:text-blue-400" />
                 Password
               </label>
-              <div className="mt-1">
+              <div className="mt-1 relative">
                 <input
                   id="password"
                   name="password"
@@ -109,7 +123,7 @@ const Login: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-50 dark:bg-gray-700 dark:text-white transition-all duration-200"
+                  className="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-50/80 dark:bg-gray-700/80 dark:text-white transition-all duration-200"
                 />
               </div>
             </div>
@@ -118,7 +132,7 @@ const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-xl"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -126,11 +140,26 @@ const Login: React.FC = () => {
                     Signing in...
                   </div>
                 ) : (
-                  'Sign in to Dashboard'
+                  <div className="flex items-center">
+                    Sign in to Dashboard
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </div>
                 )}
               </button>
             </div>
           </form>
+          
+          {/* Adding a forgot password link for completeness */}
+          <div className="mt-6 text-center">
+            <a href="#" className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
+              Forgot your password?
+            </a>
+          </div>
+        </div>
+        
+        {/* Adding a footer for completeness */}
+        <div className="mt-6 text-center text-xs text-gray-500 dark:text-gray-400">
+          © {new Date().getFullYear()} CyberGuard Security • All rights reserved
         </div>
       </div>
     </div>

@@ -7,13 +7,14 @@ import LogTable from '../components/LogTable';
 import LogDetailModal from '../components/LogDetailModal';
 import Analytics from '../components/Analytics';
 import Spinner from '../components/common/Spinner';
-import { BarChart3, Table, Shield } from 'lucide-react';
+import { BarChart3, Table, Shield, RefreshCw } from 'lucide-react';
 
 const LOGS_PER_PAGE = 15;
 
 const Dashboard: React.FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null);
   const [dataReady, setDataReady] = useState(false);
 
@@ -31,9 +32,14 @@ const Dashboard: React.FC = () => {
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchLogs = useCallback(async () => {
-    setLoading(true);
+  const fetchLogs = useCallback(async (isRefreshing = false) => {
+    if (isRefreshing) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
     setDataReady(false);
+    
     try {
       const { data, error } = await supabase
           .from('logagent')
@@ -57,11 +63,19 @@ const Dashboard: React.FC = () => {
       setDataReady(false);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   }, []);
 
   useEffect(() => {
     fetchLogs();
+    
+    // Set up auto-refresh every 60 seconds
+    const intervalId = setInterval(() => {
+      fetchLogs(true);
+    }, 60000);
+    
+    return () => clearInterval(intervalId);
   }, [fetchLogs]);
 
   const filteredLogs = useMemo(() => {
@@ -108,25 +122,34 @@ const Dashboard: React.FC = () => {
     setSelectedLog(null);
   };
 
+  const handleRefresh = () => {
+    fetchLogs(true);
+  };
+
   if (loading || !dataReady) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
           <Navbar />
-        <main className="p-6 sm:p-8 lg:p-10">
+        <main className="p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
             <header className="mb-8">
               <div className="flex items-center mb-4">
-                <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3" />
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                <div className="p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 mr-4">
+                  <Shield className="h-8 w-8 text-white drop-shadow-md" />
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
                   Security Dashboard
                 </h1>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
+              <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-medium">
                   Monitor and analyze security events in real-time.
                 </p>
               </header>
-            <div className="flex justify-center items-center h-96 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
-                <Spinner size="xl" />
+            <div className="flex justify-center items-center h-96 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
+                <div className="flex flex-col items-center">
+                  <Spinner size="xl" />
+                  <p className="mt-4 text-gray-600 dark:text-gray-400 animate-pulse">Loading security data...</p>
+                </div>
               </div>
             </div>
           </main>
@@ -135,32 +158,41 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Navbar />
-      <main className="p-6 sm:p-8 lg:p-10">
+      <main className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
-          <header className="mb-8">
-            <div className="flex items-center mb-4">
-              <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3" />
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                Security Dashboard
-              </h1>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
+          <header className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-4 sm:mb-0">
+              <div className="flex items-center mb-3">
+                <div className="p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 mr-4 transform hover:scale-105 transition-all duration-300">
+                  <Shield className="h-8 w-8 text-white drop-shadow-md" />
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                  Security Dashboard
+                </h1>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-medium pl-1">
                 Monitor and analyze security events in real-time.
               </p>
-            </header>
-              {activeTab === 'analytics' && (
-                  <Analytics logs={logs} />
-              )}
+            </div>
+            <button 
+              onClick={handleRefresh} 
+              className="flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-gray-700 dark:text-gray-300 font-medium"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh Data'}
+            </button>
+          </header>
+              
           {/* Tab Navigation */}
-          <div className="mb-8">
-            <nav className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl w-fit">
+          <div className="mb-6">
+            <nav className="flex space-x-2 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm p-1.5 rounded-2xl w-fit shadow-sm border border-gray-200/50 dark:border-gray-700/50">
               <button
                 onClick={() => setActiveTab('logs')}
                 className={`flex items-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
                   activeTab === 'logs'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-lg'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-md transform translate-y-[-1px]'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
@@ -171,7 +203,7 @@ const Dashboard: React.FC = () => {
                 onClick={() => setActiveTab('analytics')}
                 className={`flex items-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
                   activeTab === 'analytics'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-lg'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-md transform translate-y-[-1px]'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
@@ -180,31 +212,45 @@ const Dashboard: React.FC = () => {
               </button>
             </nav>
           </div>
-          {activeTab === 'logs' && (
-            <>
-              <FilterBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                filters={filters}
-                setFilters={setFilters}
-                logData={logs}
-              />
+              
+          <div className="transition-opacity duration-300 ease-in-out">
+            {activeTab === 'analytics' && (
+              <Analytics logs={logs} />
+            )}
+            
+            {activeTab === 'logs' && (
+              <>
+                <FilterBar
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  filters={filters}
+                  setFilters={setFilters}
+                  logData={logs}
+                />
 
-              <LogTable
-                logs={paginatedLogs}
-                onRowClick={handleRowClick}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </>
-          )}
+                <LogTable
+                  logs={paginatedLogs}
+                  onRowClick={handleRowClick}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+                
+                {filteredLogs.length > 0 && (
+                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400 text-center">
+                    Showing {paginatedLogs.length} of {filteredLogs.length} entries
+                  </div>
+                )}
+              </>
+            )}
+          </div>
           </div>
         </main>
+        
+        {/* Enhanced modal with transition effects */}
         {selectedLog && <LogDetailModal log={selectedLog} onClose={closeModal} />}
     </div>
   );
 };
-
 
 export default Dashboard;

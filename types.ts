@@ -1,12 +1,12 @@
 import type { User as SupabaseUser, Session as SupabaseSession } from '@supabase/supabase-js';
 
-export type Decision = 'allowed' | 'blocked' | 'monitored';
+export type Decision =  'monitored' | 'MALICIOUS' | 'BENIGN'
 
 export interface LogEntry {
   created_at: string | number | Date;
   id: number;
   ip_address: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'CONNECT' | 'OPTIONS' ;
   query_string: string;
   user_agent: string;
   decision: Decision;
