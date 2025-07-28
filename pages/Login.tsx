@@ -6,8 +6,8 @@ import ThemeToggle from '../components/common/ThemeToggle';
 import { Shield, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login, user } = useAuth();
@@ -65,19 +65,6 @@ const Login: React.FC = () => {
         <p className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300 mb-8">
           Security Dashboard
         </p>
-        
-        {/* Demo credentials card with improved styling */}
-        <div className="mb-8 mx-auto max-w-sm">
-          <div className="text-center text-sm text-gray-600 dark:text-gray-400 bg-blue-50/80 dark:bg-gray-800/80 backdrop-blur-sm p-4 rounded-xl border border-blue-200 dark:border-blue-800/50 shadow-sm">
-            <span className="font-semibold block mb-2 text-gray-800 dark:text-gray-200">Demo Credentials</span>
-            <div className="grid grid-cols-2 gap-2 text-xs md:text-sm">
-              <span className="text-gray-500 dark:text-gray-400 text-right">Email:</span>
-              <span className="font-mono text-blue-600 dark:text-blue-400 text-left">admin@example.com</span>
-              <span className="text-gray-500 dark:text-gray-400 text-right">Password:</span>
-              <span className="font-mono text-blue-600 dark:text-blue-400 text-left">password</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Form container with enhanced glassmorphism effect */}
@@ -148,13 +135,6 @@ const Login: React.FC = () => {
               </button>
             </div>
           </form>
-          
-          {/* Adding a forgot password link for completeness */}
-          <div className="mt-6 text-center">
-            <a href="#" className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200">
-              Forgot your password?
-            </a>
-          </div>
         </div>
         
         {/* Adding a footer for completeness */}
