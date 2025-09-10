@@ -15,12 +15,12 @@ const DetailRow: React.FC<{
   mono?: boolean; 
   icon?: React.ReactNode;
 }> = ({ label, value, mono = false, icon }) => (
-  <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-6 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
-    <dt className="flex items-center text-sm font-semibold text-gray-600 dark:text-gray-400">
-      {icon && <span className="mr-2 text-gray-500 dark:text-gray-400">{icon}</span>}
+  <div className="py-3 md:py-4 sm:grid sm:grid-cols-3 sm:gap-4 md:gap-6 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+    <dt className="flex items-center text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 sm:mb-0">
+      {icon && <span className="mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0">{icon}</span>}
       {label}
     </dt>
-    <dd className={`mt-2 text-sm text-gray-900 dark:text-gray-200 sm:mt-0 sm:col-span-2 ${mono ? 'font-mono bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-lg' : 'font-medium'}`}>
+    <dd className={`text-xs md:text-sm text-gray-900 dark:text-gray-200 sm:col-span-2 ${mono ? 'font-mono bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-lg break-all' : 'font-medium'}`}>
       {value}
     </dd>
   </div>
@@ -35,34 +35,42 @@ const LogDetailModal: React.FC<LogDetailModalProps> = ({ log, onClose }) => {
       }
     };
     window.addEventListener('keydown', handleEsc);
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    
     return () => {
       window.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'unset';
     };
   }, [onClose]);
   
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex justify-center items-center p-4 animate-fade-in" aria-modal="true" role="dialog" onClick={onClose}>
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden transform transition-all duration-300 ease-out animate-fade-in border border-gray-200 dark:border-gray-700" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-backdrop" aria-modal="true" role="dialog" onClick={onClose}>
+      <div className="modal-content max-w-xs sm:max-w-2xl md:max-w-4xl" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700">
+        <div className="modal-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Shield className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-3" />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-3 flex-shrink-0">
+                <Shield className="h-5 w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
                 Security Log Details
               </h3>
             </div>
             <button 
               onClick={onClose} 
-              className="p-2 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+              className="btn-ghost p-2 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              aria-label="Close modal"
             >
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5 md:h-6 md:w-6" />
             </button>
           </div>
         </div>
         
         {/* Content */}
-        <div className="px-6 py-6 overflow-y-auto custom-scrollbar max-h-[calc(90vh-140px)]">
+        <div className="modal-body">
           <div className="sm:flex sm:items-start">
             <div className="w-full">
               <dl className="space-y-0">
@@ -99,12 +107,12 @@ const LogDetailModal: React.FC<LogDetailModalProps> = ({ log, onClose }) => {
                   value={log.status} 
                   icon={<Monitor className="h-4 w-4" />}
                 />
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-6 border-b border-gray-100 dark:border-gray-700">
-                  <dt className="flex items-center text-sm font-semibold text-gray-600 dark:text-gray-400">
-                    <Shield className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <div className="py-3 md:py-4 sm:grid sm:grid-cols-3 sm:gap-4 md:gap-6 border-b border-gray-100 dark:border-gray-700">
+                  <dt className="flex items-center text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 sm:mb-0">
+                    <Shield className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0" />
                     Decision
                   </dt>
-                  <dd className="mt-2 sm:mt-0 sm:col-span-2">
+                  <dd className="sm:col-span-2">
                     <Badge decision={log.decision} />
                   </dd>
                 </div>
@@ -113,12 +121,12 @@ const LogDetailModal: React.FC<LogDetailModalProps> = ({ log, onClose }) => {
                   value={`${((log.confidence / 10) * 100).toFixed(0)}%`} 
                   icon={<Brain className="h-4 w-4" />}
                 />
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-6 border-b border-gray-100 dark:border-gray-700">
-                  <dt className="flex items-center text-sm font-semibold text-gray-600 dark:text-gray-400">
-                    <Brain className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <div className="py-3 md:py-4 sm:grid sm:grid-cols-3 sm:gap-4 md:gap-6 border-b border-gray-100 dark:border-gray-700">
+                  <dt className="flex items-center text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 sm:mb-0">
+                    <Brain className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0" />
                     Reasoning
                   </dt>
-                  <dd className="mt-2 text-sm text-gray-900 dark:text-gray-200 sm:mt-0 sm:col-span-2 bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <dd className="text-xs md:text-sm text-gray-900 dark:text-gray-200 sm:col-span-2 bg-gray-50 dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200 dark:border-gray-700 leading-relaxed">
                     {log.reasoning}
                   </dd>
                 </div>
@@ -127,12 +135,12 @@ const LogDetailModal: React.FC<LogDetailModalProps> = ({ log, onClose }) => {
                   value={log.decision_maker} 
                   icon={<User className="h-4 w-4" />}
                 />
-                <div className="py-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
-                  <dt className="flex items-center text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
-                    <Monitor className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+                <div className="py-3 md:py-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                  <dt className="flex items-center text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    <Monitor className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0" />
                     User Agent
                   </dt>
-                  <dd className="text-sm text-gray-900 dark:text-gray-200 font-mono bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 break-all">
+                  <dd className="text-xs md:text-sm text-gray-900 dark:text-gray-200 font-mono bg-gray-50 dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200 dark:border-gray-700 break-all leading-relaxed">
                     {log.user_agent}
                   </dd>
                 </div>
@@ -142,10 +150,10 @@ const LogDetailModal: React.FC<LogDetailModalProps> = ({ log, onClose }) => {
         </div>
         
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+        <div className="modal-footer">
           <button
             type="button"
-            className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-xl text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+            className="btn-secondary"
             onClick={onClose}
           >
             <X className="h-4 w-4 mr-2" />

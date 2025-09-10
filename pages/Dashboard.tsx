@@ -128,27 +128,33 @@ const Dashboard: React.FC = () => {
 
   if (loading || !dataReady) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/30 text-gray-900 dark:text-gray-100">
           <Navbar />
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-80px)]">
             <div className="max-w-7xl mx-auto">
-            <header className="mb-8">
-              <div className="flex items-center mb-4">
-                <div className="p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 mr-4">
-                  <Shield className="h-8 w-8 text-white drop-shadow-md" />
+            <header className="mb-6 md:mb-8">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div className="mb-4 sm:mb-0">
+                  <div className="flex items-center mb-3 md:mb-4">
+                    <div className="p-3 md:p-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl md:rounded-2xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 mr-4 transform hover:scale-105 transition-all duration-300">
+                      <Shield className="h-6 w-6 md:h-8 md:w-8 text-white drop-shadow-md" />
+                    </div>
+                    <div>
+                      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text">
+                        Security Dashboard
+                      </h1>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base lg:text-lg font-medium mt-1">
+                        Monitor and analyze security events in real-time.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                  Security Dashboard
-                </h1>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-medium">
-                  Monitor and analyze security events in real-time.
-                </p>
               </header>
-            <div className="flex justify-center items-center h-96 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
+            <div className="flex justify-center items-center h-64 md:h-96 card">
                 <div className="flex flex-col items-center">
                   <Spinner size="xl" />
-                  <p className="mt-4 text-gray-600 dark:text-gray-400 animate-pulse">Loading security data...</p>
+                  <p className="mt-4 text-sm md:text-base text-gray-600 dark:text-gray-400 animate-pulse-slow">Loading security data...</p>
                 </div>
               </div>
             </div>
@@ -158,62 +164,67 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/30 text-gray-900 dark:text-gray-100">
         <Navbar />
-      <main className="p-4 sm:p-6 lg:p-8">
+      <main className="p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-80px)]">
           <div className="max-w-7xl mx-auto">
-          <header className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className="mb-4 sm:mb-0">
-              <div className="flex items-center mb-3">
-                <div className="p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 mr-4 transform hover:scale-105 transition-all duration-300">
-                  <Shield className="h-8 w-8 text-white drop-shadow-md" />
+          <header className="mb-6 md:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <div className="mb-4 sm:mb-0">
+                <div className="flex items-center mb-3 md:mb-4">
+                  <div className="p-3 md:p-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl md:rounded-2xl shadow-lg shadow-blue-500/20 dark:shadow-blue-700/20 mr-4 transform hover:scale-105 transition-all duration-300">
+                    <Shield className="h-6 w-6 md:h-8 md:w-8 text-white drop-shadow-md" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text">
+                      Security Dashboard
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base lg:text-lg font-medium mt-1">
+                      Monitor and analyze security events in real-time.
+                    </p>
+                  </div>
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                  Security Dashboard
-                </h1>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg font-medium pl-1">
-                Monitor and analyze security events in real-time.
-              </p>
+              <button 
+                onClick={handleRefresh} 
+                className="btn-secondary flex items-center text-sm md:text-base"
+                disabled={refreshing}
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
+                {refreshing ? 'Refreshing...' : 'Refresh Data'}
+              </button>
             </div>
-            <button 
-              onClick={handleRefresh} 
-              className="flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-gray-700 dark:text-gray-300 font-medium"
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
-              {refreshing ? 'Refreshing...' : 'Refresh Data'}
-            </button>
           </header>
               
           {/* Tab Navigation */}
-          <div className="mb-6">
-            <nav className="flex space-x-2 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm p-1.5 rounded-2xl w-fit shadow-sm border border-gray-200/50 dark:border-gray-700/50">
+          <div className="mb-6 md:mb-8">
+            <nav className="flex space-x-1 md:space-x-2 glass p-1.5 rounded-2xl w-fit shadow-sm border border-gray-200/50 dark:border-gray-700/50">
               <button
                 onClick={() => setActiveTab('logs')}
-                className={`flex items-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                className={`flex items-center px-4 md:px-6 py-2 md:py-3 text-sm md:text-base font-semibold rounded-xl transition-all duration-200 min-h-[44px] ${
                   activeTab === 'logs'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-md transform translate-y-[-1px]'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-lg transform translate-y-[-1px]'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                <Table className="h-4 w-4 mr-2" />
-                Security Logs
+                <Table className="h-4 w-4 mr-1 md:mr-2" />
+                <span className="hidden sm:inline">Security </span>Logs
               </button>
               <button
                 onClick={() => setActiveTab('analytics')}
-                className={`flex items-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                className={`flex items-center px-4 md:px-6 py-2 md:py-3 text-sm md:text-base font-semibold rounded-xl transition-all duration-200 min-h-[44px] ${
                   activeTab === 'analytics'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-md transform translate-y-[-1px]'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-lg transform translate-y-[-1px]'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                <BarChart3 className="h-4 w-4 mr-2" />
+                <BarChart3 className="h-4 w-4 mr-1 md:mr-2" />
                 Analytics
               </button>
             </nav>
           </div>
               
-          <div className="transition-opacity duration-300 ease-in-out">
+          <div className="transition-all duration-300 ease-in-out">
             {activeTab === 'analytics' && (
               <Analytics logs={logs} />
             )}
@@ -237,7 +248,7 @@ const Dashboard: React.FC = () => {
                 />
                 
                 {filteredLogs.length > 0 && (
-                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400 text-center">
+                  <div className="mt-4 md:mt-6 text-xs md:text-sm text-gray-500 dark:text-gray-400 text-center font-medium">
                     Showing {paginatedLogs.length} of {filteredLogs.length} entries
                   </div>
                 )}
@@ -247,7 +258,7 @@ const Dashboard: React.FC = () => {
           </div>
         </main>
         
-        {/* Enhanced modal with transition effects */}
+        {/* Modal */}
         {selectedLog && <LogDetailModal log={selectedLog} onClose={closeModal} />}
     </div>
   );

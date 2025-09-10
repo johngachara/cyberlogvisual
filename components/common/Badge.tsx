@@ -6,16 +6,39 @@ interface BadgeProps {
   decision: Decision;
 }
 
-const decisionStyles: Record<Decision, string> = {
-  allowed: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800',
-  blocked: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-800',
-  monitored: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-200 dark:border-amber-800',
+const decisionStyles: Record<Decision, { style: string; indicator: string }> = {
+  allowed: { 
+    style: 'badge-success', 
+    indicator: 'status-success' 
+  },
+  blocked: { 
+    style: 'badge-danger', 
+    indicator: 'status-danger' 
+  },
+  monitored: { 
+    style: 'badge-warning', 
+    indicator: 'status-warning' 
+  },
+  BENIGN: { 
+    style: 'badge-success', 
+    indicator: 'status-success' 
+  },
+  MALICIOUS: { 
+    style: 'badge-danger', 
+    indicator: 'status-danger' 
+  },
 };
 
 const Badge: React.FC<BadgeProps> = ({ decision }) => {
+  const config = decisionStyles[decision] || { style: 'badge-info', indicator: 'status-indicator' };
+  const displayText = decision === 'BENIGN' ? 'Allowed' : 
+                     decision === 'MALICIOUS' ? 'Blocked' : 
+                     decision.charAt(0).toUpperCase() + decision.slice(1);
+  
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${decisionStyles[decision]} transition-all duration-200`}>
-      {decision.charAt(0).toUpperCase() + decision.slice(1)}
+    <span className={`${config.style} inline-flex items-center`}>
+      <span className={config.indicator}></span>
+      {displayText}
     </span>
   );
 };
